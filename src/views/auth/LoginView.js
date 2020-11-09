@@ -27,7 +27,7 @@ import ProductBrand from 'src/assets/images/home_page/portal_cliente.png';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
-    backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('+BackgroundImage+')',
+    backgroundImage: 'url('+BackgroundImage+')',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
