@@ -10,19 +10,50 @@ import {
   Link,
   TextField,
   Typography,
-  makeStyles
+  makeStyles,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia
 } from '@material-ui/core';
 import FacebookIcon from 'src/icons/Facebook';
 import GoogleIcon from 'src/icons/Google';
 import Page from 'src/components/Page';
+import BackgroundImage from 'src/assets/images/home_page/background.png';
+import RLLogo from 'src/assets/images/home_page/logotipo_rlt.png';
+import ProductBrand from 'src/assets/images/home_page/portal_cliente.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
+    backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('+BackgroundImage+')',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
     height: '100%',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
-  }
+  },
+  cardRoot: {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0)'
+  },
+  cardContent: {
+    display: 'flex',
+    width: '100%',
+    height: 151,
+    alignItems:'center'
+  },
+  cover: {
+  },
+  details: {
+    display: 'flex',
+    alignItems: 'center',
+    textAlign: 'center'
+  },
 }));
 
 const LoginView = () => {
@@ -41,6 +72,7 @@ const LoginView = () => {
         justifyContent="center"
       >
         <Container maxWidth="sm">
+          <Card style={{backgroundColor:'rgba(255,255,255,1)', padding: '16px'}}>
           <Formik
             initialValues={{
               email: 'demo@devias.io',
@@ -71,61 +103,22 @@ const LoginView = () => {
                   >
                     Sign in
                   </Typography>
-                  <Typography
-                    color="textSecondary"
-                    gutterBottom
-                    variant="body2"
-                  >
-                    Sign in on the internal platform
-                  </Typography>
                 </Box>
-                <Grid
-                  container
-                  spacing={3}
-                >
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      color="primary"
-                      fullWidth
-                      startIcon={<FacebookIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Facebook
-                    </Button>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    md={6}
-                  >
-                    <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      onClick={handleSubmit}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-                  </Grid>
-                </Grid>
+                <Box className={classes.cardRoot}>
+                  <div className={classes.details}>
+                    <CardContent className={classes.cardContent}>
+                      <img src={`${RLLogo}`} style={{height:'100%'}} />
+                      <img src={`${ProductBrand}`} style={{height:'100%'}} />
+                    </CardContent>
+                    <div>
+                    </div>
+                  </div>
+                </Box>
+                
                 <Box
                   mt={3}
                   mb={1}
                 >
-                  <Typography
-                    align="center"
-                    color="textSecondary"
-                    variant="body1"
-                  >
-                    or login with email address
-                  </Typography>
                 </Box>
                 <TextField
                   error={Boolean(touched.email && errors.email)}
@@ -169,19 +162,18 @@ const LoginView = () => {
                   color="textSecondary"
                   variant="body1"
                 >
-                  Don&apos;t have an account?
-                  {' '}
                   <Link
                     component={RouterLink}
                     to="/register"
                     variant="h6"
                   >
-                    Sign up
+                    Forgot your password?
                   </Link>
                 </Typography>
               </form>
             )}
           </Formik>
+          </Card>
         </Container>
       </Box>
     </Page>
