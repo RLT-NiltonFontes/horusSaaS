@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -23,6 +23,9 @@ import Page from 'src/components/Page';
 import BackgroundImage from 'src/assets/images/home_page/background.png';
 import RLLogo from 'src/assets/images/home_page/logotipo_rlt.png';
 import ProductBrand from 'src/assets/images/home_page/portal_cliente.png';
+import Footer1 from 'src/assets/images/home_page/footer1.png';
+
+import ForgotPW from './Dialogs/ForgotPassword'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,14 +40,11 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3)
   },
   cardRoot: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: 'block',
     backgroundColor: 'rgba(255,255,255,0)'
   },
-  cardContent: {
-    display: 'flex',
+  imagesContainer: {
     width: '100%',
-    height: 151,
     alignItems:'center'
   },
   cover: {
@@ -59,12 +59,17 @@ const useStyles = makeStyles((theme) => ({
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [forgotPassword, setForgotPassword] = useState(true)
 
+  const toggleDialog = () => {
+    setForgotPassword(!forgotPassword)
+  }
   return (
     <Page
       className={classes.root}
       title="Login"
     >
+      <ForgotPW open={forgotPassword} toggleDialog={toggleDialog}/>
       <Box
         display="flex"
         flexDirection="column"
@@ -72,11 +77,12 @@ const LoginView = () => {
         justifyContent="center"
       >
         <Container maxWidth="sm">
-          <Card style={{backgroundColor:'rgba(255,255,255,1)', padding: '16px'}}>
+          <Card style={{backgroundColor:'rgba(255,255,255,1)', padding: '16px', textAlign:'center'}}>
           <Formik
             initialValues={{
               email: 'demo@devias.io',
-              password: 'Password123'
+              password: 'Password123',
+              account: '',
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
@@ -105,14 +111,10 @@ const LoginView = () => {
                   </Typography>
                 </Box>
                 <Box className={classes.cardRoot}>
-                  <div className={classes.details}>
-                    <CardContent className={classes.cardContent}>
-                      <img src={`${RLLogo}`} style={{height:'100%'}} />
-                      <img src={`${ProductBrand}`} style={{height:'100%'}} />
-                    </CardContent>
-                    <div>
-                    </div>
-                  </div>
+                  <Grid container className={classes.imagesContainer}>
+                    <Grid item md={3} xs={12}><img src={`${RLLogo}`} style={{maxHeight:'151px'}} /></Grid>
+                    <Grid item md={9} xs={12}><img src={`${ProductBrand}`} style={{maxHeight:'151px'}} /></Grid>
+                  </Grid>
                 </Box>
                 
                 <Box
@@ -120,6 +122,17 @@ const LoginView = () => {
                   mb={1}
                 >
                 </Box>
+                <TextField
+                  fullWidth
+                  label="Account"
+                  margin="normal"
+                  name="account"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="text"
+                  value={values.account}
+                  variant="outlined"
+                />
                 <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
@@ -159,20 +172,22 @@ const LoginView = () => {
                   </Button>
                 </Box>
                 <Typography
-                  color="textSecondary"
+                  color="primary"
+                  onAuxClickCapture
                   variant="body1"
+                  onClick={() => toggleDialog()}
                 >
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    variant="h6"
-                  >
-                    Forgot your password?
-                  </Link>
+                  Forgot your password
                 </Typography>
+                
               </form>
             )}
           </Formik>
+          
+            <Typography>
+              Terms & Condition | Privacy Policy | Cookie Policy
+            </Typography>
+            <img src={`${Footer1}`} />
           </Card>
         </Container>
       </Box>

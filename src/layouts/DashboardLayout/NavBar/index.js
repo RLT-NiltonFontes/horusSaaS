@@ -31,6 +31,12 @@ const user = {
 };
 
 const items = [
+  
+  {
+    href: '/app/tickets',
+    icon: AlertCircleIcon,
+    title: 'Tickets'
+  },
   {
     href: '/app/dashboard',
     icon: BarChartIcon,
@@ -70,7 +76,7 @@ const items = [
     href: '/404',
     icon: AlertCircleIcon,
     title: 'Error'
-  }
+  },
 ];
 
 const useStyles = makeStyles(() => ({
