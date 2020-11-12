@@ -9,7 +9,6 @@ import routes from 'src/routes';
 
 const App = () => {
   const routing = useRoutes(routes);
-  console.log(routing)
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />

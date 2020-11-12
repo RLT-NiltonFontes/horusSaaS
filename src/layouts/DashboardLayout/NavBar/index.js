@@ -23,6 +23,7 @@ import {
   Users as UsersIcon
 } from 'react-feather';
 import NavItem from './NavItem';
+import RealLifeLogo from 'src/assets/images/interiores/logo_rlt_footer.png'
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
@@ -31,11 +32,20 @@ const user = {
 };
 
 const items = [
-  
   {
-    href: '/app/tickets',
+    href: '/app/tickets/open',
     icon: AlertCircleIcon,
-    title: 'Tickets'
+    title: 'Open Tickets'
+  },
+  {
+    href: '/app/tickets/current',
+    icon: AlertCircleIcon,
+    title: 'Current Tickets'
+  },
+  {
+    href: '/app/tickets/history',
+    icon: AlertCircleIcon,
+    title: 'Tickets History'
   },
   {
     href: '/app/dashboard',
@@ -43,50 +53,22 @@ const items = [
     title: 'Dashboard'
   },
   {
-    href: '/app/customers',
-    icon: UsersIcon,
-    title: 'Customers'
-  },
-  {
-    href: '/app/products',
-    icon: ShoppingBagIcon,
-    title: 'Products'
-  },
-  {
-    href: '/app/account',
-    icon: UserIcon,
-    title: 'Account'
-  },
-  {
-    href: '/app/settings',
-    icon: SettingsIcon,
-    title: 'Settings'
-  },
-  {
     href: '/login',
     icon: LockIcon,
     title: 'Login'
-  },
-  {
-    href: '/register',
-    icon: UserPlusIcon,
-    title: 'Register'
-  },
-  {
-    href: '/404',
-    icon: AlertCircleIcon,
-    title: 'Error'
   },
 ];
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
+    background: 'lightgrey',
     width: 256
   },
   desktopDrawer: {
+    background: 'lightgrey',
     width: 256,
-    top: 64,
-    height: 'calc(100% - 64px)'
+    //top: 64,
+    //height: 'calc(100% - 64px)'
   },
   avatar: {
     cursor: 'pointer',
@@ -155,35 +137,8 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       <Box
         p={2}
         m={2}
-        bgcolor="background.dark"
       >
-        <Typography
-          align="center"
-          gutterBottom
-          variant="h4"
-        >
-          Need more?
-        </Typography>
-        <Typography
-          align="center"
-          variant="body2"
-        >
-          Upgrade to PRO version and access 20 more screens
-        </Typography>
-        <Box
-          display="flex"
-          justifyContent="center"
-          mt={2}
-        >
-          <Button
-            color="primary"
-            component="a"
-            href="https://react-material-kit.devias.io"
-            variant="contained"
-          >
-            See PRO version
-          </Button>
-        </Box>
+        <img src={`${RealLifeLogo}`} width="100%" />
       </Box>
     </Box>
   );

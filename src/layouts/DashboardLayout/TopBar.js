@@ -17,7 +17,11 @@ import InputIcon from '@material-ui/icons/Input';
 import Logo from 'src/components/Logo';
 
 const useStyles = makeStyles(() => ({
-  root: {},
+  root: {
+    //paddingLeft: 256
+    background: 'rgba(0,0,0,0)',
+    color: 'black',
+  },
   avatar: {
     width: 60,
     height: 60
@@ -40,7 +44,7 @@ const TopBar = ({
     >
       <Toolbar>
         <RouterLink to="/">
-          <Logo width="50px"/>
+
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>

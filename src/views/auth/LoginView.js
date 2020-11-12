@@ -112,8 +112,8 @@ const LoginView = () => {
                 </Box>
                 <Box className={classes.cardRoot}>
                   <Grid container className={classes.imagesContainer}>
-                    <Grid item md={3} xs={12}><img src={`${RLLogo}`} style={{maxHeight:'151px'}} /></Grid>
-                    <Grid item md={9} xs={12}><img src={`${ProductBrand}`} style={{maxHeight:'151px'}} /></Grid>
+                    <Grid item md={3} xs={12}><img src={`${RLLogo}`} style={{maxWidth:'100%'}} /></Grid>
+                    <Grid item md={9} xs={12}><img src={`${ProductBrand}`} style={{maxWidth:'100%'}} /></Grid>
                   </Grid>
                 </Box>
                 

@@ -23,9 +23,10 @@ const routes = [
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: 'tickets', element: <Tickets />, children: [
-        {path: '/'},
-        {path: ':id'},
-        {path: 'me'},
+        {path: 'open'},
+        {path: 'current'},
+        {path: 'history'},
+        {path: ':id'}
       ] },
       { path: '*', element: <Navigate to="/404" /> }
     ]

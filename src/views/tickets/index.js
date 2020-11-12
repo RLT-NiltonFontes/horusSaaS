@@ -7,6 +7,9 @@ import {
 } from '@material-ui/core';
 import { Routes, Route } from 'react-router-dom';
 
+import CurrentTickets from './CurrentTickets';
+import OpenTicket from './OpenTicket'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -22,9 +25,10 @@ const useStyles = makeStyles((theme) => ({
 const Tickets = () => {
     return (
         <Routes>
-            <Route path="/" element={<h1>Home Tickets</h1>} />
-            <Route path=":id" element={<h1>ID Tickets</h1>} />
-            <Route path="me" element={<h1>ME Tickets</h1>} />
+            <Route path="/open" element={<OpenTicket />} />
+            <Route path="/current" element={<CurrentTickets />} />
+            <Route path="/history" element={<h1>history Tickets</h1>} />
+            <Route path="/:id" element={<h1>ID Tickets</h1>} />
         </Routes>
     );
 };
