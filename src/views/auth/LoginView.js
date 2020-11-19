@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {connect} from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import {login} from 'src/redux/actions/auth'
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {
@@ -25,7 +27,10 @@ import RLLogo from 'src/assets/images/home_page/logotipo_rlt.png';
 import ProductBrand from 'src/assets/images/home_page/portal_cliente.png';
 import Footer1 from 'src/assets/images/home_page/footer1.png';
 
-import ForgotPW from './Dialogs/ForgotPassword'
+import ForgotPW from './Dialogs/ForgotPassword';
+
+import {logout} from 'src/redux/actions/auth';
+import Snackbar from 'src/components/Alert'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,10 +61,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginView = () => {
+const LoginView = (props) => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const [forgotPassword, setForgotPassword] = useState(true)
+  const [forgotPassword, setForgotPassword] = useState(false)
+  const logout = props.logout;
+  useEffect(() => {
+    logout()
+  }, []) 
 
   const toggleDialog = () => {
     setForgotPassword(!forgotPassword)
@@ -70,6 +79,7 @@ const LoginView = () => {
       title="Login"
     >
       <ForgotPW open={forgotPassword} toggleDialog={toggleDialog}/>
+      <Snackbar message="User and password do not match!" type="error"/>;
       <Box
         display="flex"
         flexDirection="column"
@@ -80,16 +90,22 @@ const LoginView = () => {
           <Card style={{backgroundColor:'rgba(255,255,255,1)', padding: '16px', textAlign:'center'}}>
           <Formik
             initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123',
+              userName: 'client',
+              password: 'client',
               account: '',
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+              userName: Yup.string().max(255).required('Username is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+            onSubmit={async (values) => {
+              const res = await props.login(values)
+              console.log('res', res);
+              if(res === 200){
+                navigate('/app/dashboard', { replace: true });
+              }else if(res === 506){
+                return <Snackbar message="User and password do not match!" type="error"/>;
+              }
             }}
           >
             {({
@@ -134,16 +150,16 @@ const LoginView = () => {
                   variant="outlined"
                 />
                 <TextField
-                  error={Boolean(touched.email && errors.email)}
+                  error={Boolean(touched.userName && errors.userName)}
                   fullWidth
-                  helperText={touched.email && errors.email}
+                  helperText={touched.userName && errors.userName}
                   label="Email Address"
                   margin="normal"
-                  name="email"
+                  name="userName"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  type="email"
-                  value={values.email}
+                  type="text"
+                  value={values.userName}
                   variant="outlined"
                 />
                 <TextField
@@ -195,4 +211,9 @@ const LoginView = () => {
   );
 };
 
-export default LoginView;
+const mapDispatchToProps = (dispatch) => ({
+  login: (loginData) => dispatch(login(loginData)),
+  logout: () => dispatch(logout())
+})
+
+export default connect(null, mapDispatchToProps)(LoginView);

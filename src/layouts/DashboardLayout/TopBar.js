@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {connect} from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -15,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import Logo from 'src/components/Logo';
+import {logout} from 'src/redux/actions/auth'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -31,6 +33,7 @@ const useStyles = makeStyles(() => ({
 const TopBar = ({
   className,
   onMobileNavOpen,
+  logout,
   ...rest
 }) => {
   const classes = useStyles();
@@ -57,7 +60,10 @@ const TopBar = ({
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={async () => {
+              await logout();
+              window.location.pathname = '/login'
+            }}>
             <InputIcon />
           </IconButton>
         </Hidden>
@@ -79,4 +85,8 @@ TopBar.propTypes = {
   onMobileNavOpen: PropTypes.func
 };
 
-export default TopBar;
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout())
+})
+
+export default connect(null, mapDispatchToProps)(TopBar);

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import {connect} from 'react-redux'
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -24,12 +25,6 @@ import {
 } from 'react-feather';
 import NavItem from './NavItem';
 import RealLifeLogo from 'src/assets/images/interiores/logo_rlt_footer.png'
-
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
-};
 
 const items = [
   {
@@ -77,7 +72,8 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const NavBar = ({ onMobileClose, openMobile }) => {
+const NavBar = ({ onMobileClose, openMobile, user }) => {
+  console.log(user)
   const classes = useStyles();
   const location = useLocation();
 
@@ -100,25 +96,25 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         flexDirection="column"
         p={2}
       >
-        <Avatar
+        {/* <Avatar
           className={classes.avatar}
           component={RouterLink}
           src={user.avatar}
           to="/app/account"
-        />
+        /> */}
         <Typography
           className={classes.name}
           color="textPrimary"
           variant="h5"
         >
-          {user.name}
+          {user.userFirstName || '-'+' '+user.userLastName || ''}
         </Typography>
-        <Typography
+        {/* <Typography
           color="textSecondary"
           variant="body2"
         >
           {user.jobTitle}
-        </Typography>
+        </Typography> */}
       </Box>
       <Divider />
       <Box p={2}>
@@ -180,4 +176,8 @@ NavBar.defaultProps = {
   openMobile: false
 };
 
-export default NavBar;
+const mapStateToProps = state => ({
+  user: state.auth.user || {}
+})
+
+export default connect(mapStateToProps)(NavBar);
