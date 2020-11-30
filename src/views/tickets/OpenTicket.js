@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux'
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Container, Grid, Card, CardContent, Divider, CardHeader, TextField, Box, Button, makeStyles, Snackbar } from '@material-ui/core';
+import { Container, Grid, Card, CardContent, Divider, CardHeader, TextField, Box, Button, makeStyles, Snackbar, CircularProgress } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import {openTicket} from 'src/redux/actions/tickets'
+import {openTicket} from 'src/redux/actions/tickets';
+
+import strings from 'src/languages/openTickets';
 
 const states = [];
 const useStyles = makeStyles(() => ({
@@ -23,7 +25,7 @@ const useStyles = makeStyles(() => ({
 
 const OpenTicket = ({className, openTicket, ...rest}) => {
 
-
+    const lng = strings.pt;
     const navigate = useNavigate();
     const classes = useStyles();
     const [alert, setAlert] = React.useState('success')
@@ -39,10 +41,10 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
 
     const alerts = {
       success: <Alert onClose={handleCloseAlert} severity="success">
-                Open with success
+                {lng.onOpenSuccess}
               </Alert>,
       error: <Alert onClose={handleCloseAlert} severity="error">
-                Failed to add
+                {lng.onOpenError}
               </Alert>,
     }
         return (
@@ -52,11 +54,12 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
               </Snackbar>
               <Formik
                 initialValues={{
-                  rlString: 'CODE 1232143 3',
-                  clientTicket: 'CLIENT TICKET 31221',
-                  clientExtraNotes: 'EXTRA 12312 ',
-                  address: 'Lisbon, Portugal',
-                  description: 'Desc12312',
+                  rlString: '',
+                  clientTicket: '',
+                  clientExtraNotes: '',
+                  address: '',
+                  assets: '',
+                  description: '',
                 }}
                 validationSchema={Yup.object().shape({
                   rlString: Yup.string().max(255).required('Email is required'),
@@ -67,9 +70,9 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
                 })}
                 onSubmit={ async (values, formikBag) => {
                   const response = await openTicket(values)
-                  if(response === 200){
+                  if(response.status === 200){
                     setAlert('success')
-                    formikBag.resetForm()
+                    navigate('/app/tickets/'+response.ticketID)
                   }else{
                     setAlert('error')
                   }
@@ -92,13 +95,14 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
                 >
                   <Card>
                     <CardHeader
-                      title="Open Ticket"
+                      title={lng.pageTitle}
                       action={
                         <Button color="primary" variant="contained"
                           disabled={isSubmitting}
                           size="large"
                           type="submit"
-                          > Criar </Button>
+                          endIcon={isSubmitting ? <CircularProgress /> : null}
+                          > {lng.openButton} </Button>
                       }
                     />
                     <Divider />
@@ -113,7 +117,7 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
                             helperText={touched.rlString && errors.rlString}
                             fullWidth
                             onBlur={handleBlur}
-                            label="Contrato"
+                            label={lng.rlString}
                             name="rlString"
                             onChange={handleChange}
                             required
@@ -127,7 +131,7 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
                             helperText={touched.clientTicket && errors.clientTicket}
                             fullWidth
                             onBlur={handleBlur}
-                            label="ID Interno"
+                            label={lng.clientTicket}
                             name="clientTicket"
                             onChange={handleChange}
                             required
@@ -141,7 +145,7 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
                             helperText={touched.clientExtraNotes && errors.clientExtraNotes}
                             fullWidth
                             onBlur={handleBlur}
-                            label="Breve Título"
+                            label={lng.clientExtraNotes}
                             name="clientExtraNotes"
                             onChange={handleChange}
                             required
@@ -155,7 +159,7 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
                             helperText={touched.address && errors.address}
                             fullWidth
                             onBlur={handleBlur}
-                            label="Morada"
+                            label={lng.address}
                             name="address"
                             onChange={handleChange}
                             type="number"
@@ -165,13 +169,29 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
                             multiline
                           />
                         </Grid>
-                        <Grid item md={12} xs={12}>
+                        <Grid item md={4} xs={12}>
+                          <TextField
+                            error={Boolean(touched.assets && errors.assets)}
+                            helperText={touched.assets && errors.assets}
+                            fullWidth
+                            onBlur={handleBlur}
+                            label={lng.assets}
+                            name="assets"
+                            onChange={handleChange}
+                            required
+                            value={values.assets}
+                            variant="outlined"
+                            multiline
+                            rows={5}
+                          />
+                        </Grid>
+                        <Grid item md={8} xs={12}>
                           <TextField
                             error={Boolean(touched.description && errors.description)}
                             helperText={touched.description && errors.description}
                             fullWidth
                             onBlur={handleBlur}
-                            label="Descrição"
+                            label={lng.description}
                             name="description"
                             onChange={handleChange}
                             required

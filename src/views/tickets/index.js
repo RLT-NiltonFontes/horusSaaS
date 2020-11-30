@@ -8,7 +8,9 @@ import {
 import { Routes, Route } from 'react-router-dom';
 
 import CurrentTickets from './CurrentTickets';
-import OpenTicket from './OpenTicket'
+import OpenTicket from './OpenTicket';
+import TicketData from './TicketData/TicketData';
+import TicketsHistory from './TicketsHistory';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,8 +29,9 @@ const Tickets = () => {
         <Routes>
             <Route path="/open" element={<OpenTicket />} />
             <Route path="/current" element={<CurrentTickets />} />
-            <Route path="/history" element={<h1>history Tickets</h1>} />
-            <Route path="/:id" element={<h1>ID Tickets</h1>} />
+            <Route path="/history" element={<TicketsHistory />} />
+            <Route path="/:id" element={<TicketData />
+          } />
         </Routes>
     );
 };

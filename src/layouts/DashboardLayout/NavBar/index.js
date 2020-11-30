@@ -73,7 +73,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const NavBar = ({ onMobileClose, openMobile, user }) => {
-  console.log(user)
   const classes = useStyles();
   const location = useLocation();
 
@@ -107,7 +106,7 @@ const NavBar = ({ onMobileClose, openMobile, user }) => {
           color="textPrimary"
           variant="h5"
         >
-          {user.userFirstName || '-'+' '+user.userLastName || ''}
+          {(user.userFirstName || '-')+' '+(user.userLastName || '')}
         </Typography>
         {/* <Typography
           color="textSecondary"

@@ -3,7 +3,7 @@ import Alert from '@material-ui/lab/Alert';
 import { Snackbar } from '@material-ui/core';
 
 
-const SnackbarComponent = (type, message) => {
+const SnackbarComponent = ({type, message}) => {
 
     const [open, setOpen] = React.useState(true);
     const handleCloseAlert = (event, reason) => {
@@ -18,7 +18,7 @@ const SnackbarComponent = (type, message) => {
                     {message}
                 </Alert>,
         error: <Alert onClose={handleCloseAlert} severity="error">
-                    {message}
+                    {}
                 </Alert>,
         info: <Alert onClose={handleCloseAlert} severity="info">
                     {message}

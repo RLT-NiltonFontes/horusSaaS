@@ -9,18 +9,13 @@ import {
   Button,
   Container,
   Grid,
-  Link,
   TextField,
   Typography,
   makeStyles,
   Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia
+  CircularProgress
 } from '@material-ui/core';
-import FacebookIcon from 'src/icons/Facebook';
-import GoogleIcon from 'src/icons/Google';
+import Alert from '@material-ui/lab/Alert';
 import Page from 'src/components/Page';
 import BackgroundImage from 'src/assets/images/home_page/background.png';
 import RLLogo from 'src/assets/images/home_page/logotipo_rlt.png';
@@ -30,7 +25,6 @@ import Footer1 from 'src/assets/images/home_page/footer1.png';
 import ForgotPW from './Dialogs/ForgotPassword';
 
 import {logout} from 'src/redux/actions/auth';
-import Snackbar from 'src/components/Alert'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +58,17 @@ const useStyles = makeStyles((theme) => ({
 const LoginView = (props) => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const [forgotPassword, setForgotPassword] = useState(false)
+  const [forgotPassword, setForgotPassword] = useState(false);
+  
+  const [alert, setAlert] = React.useState(null)
+  const [open, setOpen] = React.useState(false);
+  const handleCloseAlert = (event, reason) => {
+    setAlert(null)
+  };
+  const alerts = {
+    error506: <Alert severity="error" onClose={() => {handleCloseAlert()}}>User and password do not match!</Alert>
+  }
+
   const logout = props.logout;
   useEffect(() => {
     logout()
@@ -79,7 +83,6 @@ const LoginView = (props) => {
       title="Login"
     >
       <ForgotPW open={forgotPassword} toggleDialog={toggleDialog}/>
-      <Snackbar message="User and password do not match!" type="error"/>;
       <Box
         display="flex"
         flexDirection="column"
@@ -100,11 +103,10 @@ const LoginView = (props) => {
             })}
             onSubmit={async (values) => {
               const res = await props.login(values)
-              console.log('res', res);
               if(res === 200){
                 navigate('/app/dashboard', { replace: true });
               }else if(res === 506){
-                return <Snackbar message="User and password do not match!" type="error"/>;
+                setAlert('error506')
               }
             }}
           >
@@ -133,10 +135,8 @@ const LoginView = (props) => {
                   </Grid>
                 </Box>
                 
-                <Box
-                  mt={3}
-                  mb={1}
-                >
+                <Box mt={3} mb={1} >
+                  {alerts[alert]}
                 </Box>
                 <TextField
                   fullWidth
@@ -179,6 +179,7 @@ const LoginView = (props) => {
                   <Button
                     color="primary"
                     disabled={isSubmitting}
+                    endIcon={isSubmitting ? <CircularProgress /> : null}
                     fullWidth
                     size="large"
                     type="submit"

@@ -4,14 +4,16 @@ import api from '../api';
 import sha1 from 'sha1'
 
 export const checkAuthStatus = () => {
-    console.log('here')
-    return dispatch => {
+    return async dispatch => {
         const authToken = localStorage.getItem('AUTH-TOKEN');
         const userAuthToken = localStorage.getItem('USER-AUTH-TOKEN');
         const user = JSON.parse(localStorage.getItem('user'))
-
+        console.log('check auth ')
         if(authToken && userAuthToken && user){
-            dispatch(successLogin({
+            axios.defaults.headers.common['AUTH-TOKEN'] = authToken;
+            axios.defaults.headers.common['USER-AUTH-TOKEN'] = userAuthToken;
+            console.log(axios.defaults.headers)
+            await dispatch(successLogin({
                 user: user,
                 authToken: authToken,
                 userAuthToken: userAuthToken,
@@ -33,7 +35,6 @@ export const login = (loginData) => {
         let status;
         await response.then(
             response => {
-                console.log(response)
                 status = response.status;
 
                 //set axios headers
@@ -83,4 +84,16 @@ export const successLogout = () => {
     return {
         type: types.LOGOUT,
     }
+}
+
+export const forgotPassword = async (data) => {
+    const formData = new FormData();
+    formData.append('account', data.account);
+    formData.append('userName', data.userName);
+    return axios.post(
+        api.forgotPassword, formData
+    ).then( res => {
+        return res.status
+    } )
+    .catch( err  => console.log(err) )
 }

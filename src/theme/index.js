@@ -15,6 +15,9 @@ const theme = createMuiTheme({
     secondary: {
       main: colors.indigo[500]
     },
+    success: {
+      main: colors.green[500]
+    },
     error: {
       main: colors.red[500]
     },
