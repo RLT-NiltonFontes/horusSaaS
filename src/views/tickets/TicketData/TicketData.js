@@ -89,7 +89,7 @@ const setActions = (ticket, setDialog) => {
 
 const TicketData = (props) => {
   const ticket = props.ticket ?? {};
-  const lng = strings['pt'];
+  const lng = strings[props.language];
   const classes = useStyles();
   const params = useParams();
   const [value, setValue] = React.useState(2);
@@ -218,6 +218,7 @@ const TicketData = (props) => {
 
 const mapStateToProps = state => ({
   ticket: state.tickets.ticketData || {},
+  language: state.settings.language,
 })
 
 const mapDispatchToProps = dispatch => ({

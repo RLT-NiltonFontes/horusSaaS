@@ -11,8 +11,16 @@ import {
   Hidden,
   List,
   Typography,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
   makeStyles
 } from '@material-ui/core';
+import HistoryIcon from '@material-ui/icons/PlaylistAddCheck';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
+import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import {
   AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
@@ -21,38 +29,38 @@ import {
   ShoppingBag as ShoppingBagIcon,
   User as UserIcon,
   UserPlus as UserPlusIcon,
-  Users as UsersIcon
+  Users as UsersIcon,
 } from 'react-feather';
+import { 
+  LogOut } from 'react-feather'
 import NavItem from './NavItem';
-import RealLifeLogo from 'src/assets/images/interiores/logo_rlt_footer.png'
+import RealLifeLogo from 'src/assets/images/interiores/logo_rlt_footer.png';
+import ChangeLanguage from 'src/components/ChangeLanguage';
 
-const items = [
-  {
-    href: '/app/tickets/open',
-    icon: AlertCircleIcon,
-    title: 'Open Tickets'
-  },
-  {
-    href: '/app/tickets/current',
-    icon: AlertCircleIcon,
-    title: 'Current Tickets'
-  },
-  {
-    href: '/app/tickets/history',
-    icon: AlertCircleIcon,
-    title: 'Tickets History'
-  },
+import strings from 'src/languages/sidebar'
+
+const items = (lng) => ([
   {
     href: '/app/dashboard',
     icon: BarChartIcon,
     title: 'Dashboard'
   },
   {
-    href: '/login',
-    icon: LockIcon,
-    title: 'Login'
+    href: '/app/tickets/open',
+    icon: AddBoxOutlinedIcon,
+    title: strings[lng].openTicket ?? 'Open Ticket'
   },
-];
+  {
+    href: '/app/tickets/current',
+    icon: ListAltIcon,
+    title: strings[lng].currentTickets ?? 'Current Tickets'
+  },
+  {
+    href: '/app/tickets/history',
+    icon: CheckBoxOutlinedIcon,
+    title: strings[lng].ticketsHistory ?? 'Tickets History'
+  },
+]);
 
 const useStyles = makeStyles(() => ({
   mobileDrawer: {
@@ -72,9 +80,22 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const NavBar = ({ onMobileClose, openMobile, user }) => {
+const NavBar = ({ onMobileClose, openMobile, user, currentLanguage }) => {
   const classes = useStyles();
   const location = useLocation();
+
+  const [age, setAge] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+   const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -82,7 +103,6 @@ const NavBar = ({ onMobileClose, openMobile, user }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
-
   const content = (
     <Box
       height="100%"
@@ -118,7 +138,7 @@ const NavBar = ({ onMobileClose, openMobile, user }) => {
       <Divider />
       <Box p={2}>
         <List>
-          {items.map((item) => (
+          {items(currentLanguage).map((item) => (
             <NavItem
               href={item.href}
               key={item.title}
@@ -133,6 +153,7 @@ const NavBar = ({ onMobileClose, openMobile, user }) => {
         p={2}
         m={2}
       >
+        <ChangeLanguage />
         <img src={`${RealLifeLogo}`} width="100%" />
       </Box>
     </Box>
@@ -176,7 +197,9 @@ NavBar.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-  user: state.auth.user || {}
+  user: state.auth.user || {},
+  languages: state.settings.languages,
+  currentLanguage: state.settings.language
 })
 
 export default connect(mapStateToProps)(NavBar);

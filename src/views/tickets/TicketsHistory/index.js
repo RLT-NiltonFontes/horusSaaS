@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OpenTickets = (props) => {
-    const lng = strings['pt'];
+    const lng = strings[props.language];
     useEffect( () => {
       props.returnTicketsList([])
     }, [])
@@ -292,6 +292,7 @@ const OpenTickets = (props) => {
 
 const mapStateToProps = state => ({
   ticketsList: state.tickets.ticketsList,
+  language: state.settings.language,
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -1,6 +1,7 @@
 import * as types from './types';
 import axios from 'axios';
 import api from '../api'; 
+import {setLanguage} from '../settings'
 import sha1 from 'sha1'
 
 export const checkAuthStatus = () => {
@@ -12,7 +13,8 @@ export const checkAuthStatus = () => {
         if(authToken && userAuthToken && user){
             axios.defaults.headers.common['AUTH-TOKEN'] = authToken;
             axios.defaults.headers.common['USER-AUTH-TOKEN'] = userAuthToken;
-            console.log(axios.defaults.headers)
+            console.log('Local Storage', localStorage.getItem('language'))
+            dispatch(setLanguage(localStorage.getItem('language') ?? 'pt'))
             await dispatch(successLogin({
                 user: user,
                 authToken: authToken,

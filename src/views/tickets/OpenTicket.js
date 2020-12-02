@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import {openTicket} from 'src/redux/actions/tickets';
 
-import strings from 'src/languages/openTickets';
+import strings from 'src/languages/tickets';
 
 const states = [];
 const useStyles = makeStyles(() => ({
@@ -23,9 +23,9 @@ const useStyles = makeStyles(() => ({
     }
   }));
 
-const OpenTicket = ({className, openTicket, ...rest}) => {
+const OpenTicket = ({className, openTicket, language, ...rest}) => {
 
-    const lng = strings.pt;
+    const lng = strings[language];
     const navigate = useNavigate();
     const classes = useStyles();
     const [alert, setAlert] = React.useState('success')
@@ -225,9 +225,11 @@ const OpenTicket = ({className, openTicket, ...rest}) => {
             </Container>
     )
 }
-
+const mapStateToProps = state => ({
+  language: state.settings.language
+})
 const mapDispatchToProps = dispatch => ({
   openTicket: (data) => dispatch(openTicket(data))
 })
 
-export default connect(null, mapDispatchToProps)(OpenTicket);
+export default connect(mapStateToProps, mapDispatchToProps)(OpenTicket);

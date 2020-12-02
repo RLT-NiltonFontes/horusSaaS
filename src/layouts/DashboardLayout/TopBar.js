@@ -16,7 +16,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import Logo from 'src/components/Logo';
-import {logout} from 'src/redux/actions/auth'
+import {logout} from 'src/redux/actions/auth';
+import { LogOut } from 'react-feather'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -51,7 +52,7 @@ const TopBar = ({
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge
               badgeContent={notifications.length}
               color="primary"
@@ -59,12 +60,12 @@ const TopBar = ({
             >
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
           <IconButton color="inherit" onClick={async () => {
               await logout();
               window.location.pathname = '/login'
             }}>
-            <InputIcon />
+            <LogOut />
           </IconButton>
         </Hidden>
         <Hidden lgUp>
@@ -73,6 +74,13 @@ const TopBar = ({
             onClick={onMobileNavOpen}
           >
             <MenuIcon />
+          </IconButton>
+          
+          <IconButton color="inherit" onClick={async () => {
+              await logout();
+              window.location.pathname = '/login'
+            }}>
+            <LogOut />
           </IconButton>
         </Hidden>
       </Toolbar>
